@@ -2,7 +2,7 @@ using System.ComponentModel;
 
 namespace Diplom
 {
-    partial class CreateItem
+    partial class EditItem
     {
         /// <summary>
         /// Required designer variable.
@@ -179,7 +179,7 @@ namespace Diplom
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(91, 33);
             this.button5.TabIndex = 14;
-            this.button5.Text = "Добавить";
+            this.button5.Text = "Изменить";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
@@ -193,7 +193,7 @@ namespace Diplom
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
-            // CreateItem
+            // EditItem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -214,7 +214,7 @@ namespace Diplom
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox1);
-            this.Name = "CreateItem";
+            this.Name = "EditItem";
             this.Text = "CreateItem";
             this.ResumeLayout(false);
             this.PerformLayout();

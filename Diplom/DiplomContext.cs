@@ -18,9 +18,9 @@ namespace Diplom
         }
 
         public virtual DbSet<Item> Items { get; set; }
-        public virtual DbSet<ItemPartition> ItemPartitions { get; set; }
+        public virtual DbSet<ItemItem> ItemItems { get; set; }
         public virtual DbSet<ItemResource> ItemResources { get; set; }
-        public virtual DbSet<Partition> Partitions { get; set; }
+        public virtual DbSet<Measure> Measures { get; set; }
         public virtual DbSet<Resource> Resources { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -28,7 +28,7 @@ namespace Diplom
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseNpgsql("host=localhost;database=diplom;username=postgres;password=123");
+                optionsBuilder.UseNpgsql("Host=localhost;Database=diplom1;Username=postgres;Password=123");
             }
         }
 
@@ -45,34 +45,37 @@ namespace Diplom
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
+                entity.Property(e => e.CountOnStore).HasColumnName("count_on_store");
+
                 entity.Property(e => e.Title)
                     .IsRequired()
                     .HasColumnType("character varying")
                     .HasColumnName("title");
             });
 
-            modelBuilder.Entity<ItemPartition>(entity =>
+            modelBuilder.Entity<ItemItem>(entity =>
             {
-                entity.ToTable("item_partition");
-
-                entity.HasIndex(e => e.Id, "item_partition_id_uindex")
-                    .IsUnique();
+                entity.ToTable("item_item");
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.ItemId).HasColumnName("item_id");
+                entity.Property(e => e.ChildItemId).HasColumnName("child_item_id");
 
-                entity.Property(e => e.PartitionId).HasColumnName("partition_id");
+                entity.Property(e => e.Count).HasColumnName("count");
 
-                entity.HasOne(d => d.Item)
-                    .WithMany(p => p.ItemPartitions)
-                    .HasForeignKey(d => d.ItemId)
-                    .HasConstraintName("item_partition_item_id_fk");
+                entity.Property(e => e.ParentItemId).HasColumnName("parent_item_id");
 
-                entity.HasOne(d => d.Partition)
-                    .WithMany(p => p.ItemPartitions)
-                    .HasForeignKey(d => d.PartitionId)
-                    .HasConstraintName("item_partition_partition_id_fk");
+                entity.HasOne(d => d.ChildItem)
+                    .WithMany(p => p.ItemItemChildItems)
+                    .HasForeignKey(d => d.ChildItemId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("item_item_item_id_fk_2");
+
+                entity.HasOne(d => d.ParentItem)
+                    .WithMany(p => p.ItemItemParentItems)
+                    .HasForeignKey(d => d.ParentItemId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("item_item_item_id_fk");
             });
 
             modelBuilder.Entity<ItemResource>(entity =>
@@ -82,9 +85,7 @@ namespace Diplom
                 entity.HasIndex(e => e.Id, "partition_resource_id_uindex")
                     .IsUnique();
 
-                entity.Property(e => e.Id)
-                    .HasColumnName("id")
-                    .HasDefaultValueSql("nextval('partition_resource_id_seq'::regclass)");
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Count).HasColumnName("count");
 
@@ -103,14 +104,13 @@ namespace Diplom
                     .HasConstraintName("partition_resource_resource_id_fk");
             });
 
-            modelBuilder.Entity<Partition>(entity =>
+            modelBuilder.Entity<Measure>(entity =>
             {
-                entity.ToTable("partition");
+                entity.ToTable("measure");
 
-                entity.HasIndex(e => e.Id, "partition_id_uindex")
-                    .IsUnique();
-
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .ValueGeneratedNever()
+                    .HasColumnName("id");
 
                 entity.Property(e => e.Title)
                     .IsRequired()
@@ -127,18 +127,20 @@ namespace Diplom
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.PartitionId).HasColumnName("partition_id");
+                entity.Property(e => e.CountOnStore).HasColumnName("count_on_store");
+
+                entity.Property(e => e.MeasureId).HasColumnName("measureId");
 
                 entity.Property(e => e.Title)
                     .IsRequired()
                     .HasColumnType("character varying")
                     .HasColumnName("title");
 
-                entity.HasOne(d => d.Partition)
+                entity.HasOne(d => d.Measure)
                     .WithMany(p => p.Resources)
-                    .HasForeignKey(d => d.PartitionId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("resource_partition_id_fk");
+                    .HasForeignKey(d => d.MeasureId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("resource_measure_id_fk");
             });
 
             OnModelCreatingPartial(modelBuilder);

@@ -9,14 +9,17 @@ namespace Diplom
     {
         public Item()
         {
-            ItemPartitions = new HashSet<ItemPartition>();
+            ItemItemChildItems = new HashSet<ItemItem>();
+            ItemItemParentItems = new HashSet<ItemItem>();
             ItemResources = new HashSet<ItemResource>();
         }
 
         public long Id { get; set; }
         public string Title { get; set; }
+        public int? CountOnStore { get; set; }
 
-        public virtual ICollection<ItemPartition> ItemPartitions { get; set; }
+        public virtual ICollection<ItemItem> ItemItemChildItems { get; set; }
+        public virtual ICollection<ItemItem> ItemItemParentItems { get; set; }
         public virtual ICollection<ItemResource> ItemResources { get; set; }
 
         public override string ToString()

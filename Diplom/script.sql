@@ -1,9 +1,10 @@
 create table item
 (
-    id    bigserial not null
+    id             bigserial not null
         constraint item_pk
             primary key,
-    title varchar   not null
+    title          varchar   not null,
+    count_on_store integer
 );
 
 alter table item
@@ -12,50 +13,47 @@ alter table item
 create unique index item_id_uindex
     on item (id);
 
-create table partition
+create table item_item
 (
-    id    bigserial not null
-        constraint partition_pk
+    id             bigserial not null
+        constraint item_item_pk
             primary key,
-    title varchar   not null
-);
-
-alter table partition
-    owner to postgres;
-
-create unique index partition_id_uindex
-    on partition (id);
-
-create table item_partition
-(
-    id           bigserial not null
-        constraint item_partition_pk
-            primary key,
-    item_id      bigint    not null
-        constraint item_partition_item_id_fk
+    parent_item_id bigint
+        constraint item_item_item_id_fk
             references item
             on update cascade on delete cascade,
-    partition_id bigint    not null
-        constraint item_partition_partition_id_fk
-            references partition
-            on update cascade on delete cascade
+    child_item_id  bigint
+        constraint item_item_item_id_fk_2
+            references item
+            on update cascade on delete cascade,
+    count          integer
 );
 
-alter table item_partition
+alter table item_item
     owner to postgres;
 
-create unique index item_partition_id_uindex
-    on item_partition (id);
+create table measure
+(
+    id    bigint  not null
+        constraint measure_pk
+            primary key,
+    title varchar not null
+);
+
+alter table measure
+    owner to postgres;
 
 create table resource
 (
-    id           bigserial not null
+    id             bigserial not null
         constraint resource_pk
             primary key,
-    title        varchar   not null,
-    partition_id bigint    not null
-        constraint resource_partition_id_fk
-            references partition
+    title          varchar   not null,
+    count_on_store integer default 0,
+    "measureId"    bigint
+        constraint resource_measure_id_fk
+            references measure
+            on update cascade on delete cascade
 );
 
 alter table resource
@@ -85,5 +83,4 @@ alter table item_resource
 
 create unique index partition_resource_id_uindex
     on item_resource (id);
-
 

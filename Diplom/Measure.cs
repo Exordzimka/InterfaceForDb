@@ -5,18 +5,16 @@ using System.Collections.Generic;
 
 namespace Diplom
 {
-    public partial class Partition
+    public partial class Measure
     {
-        public Partition()
+        public Measure()
         {
-            ItemPartitions = new HashSet<ItemPartition>();
             Resources = new HashSet<Resource>();
         }
 
         public long Id { get; set; }
         public string Title { get; set; }
 
-        public virtual ICollection<ItemPartition> ItemPartitions { get; set; }
         public virtual ICollection<Resource> Resources { get; set; }
 
         public override string ToString()

@@ -37,8 +37,15 @@ D:\Downloads\studying\Diplom\Diplom\Diplom\bin\Debug\net5.0-windows\Microsoft.En
 D:\Downloads\studying\Diplom\Diplom\Diplom\obj\Debug\net5.0-windows\Diplom.CreateItem.resources
 D:\Downloads\studying\Diplom\Diplom\Diplom\obj\Debug\net5.0-windows\Diplom.CreateResourceForm.resources
 D:\Downloads\studying\Diplom\Diplom\Diplom\obj\Debug\net5.0-windows\Diplom.DbForm.resources
-D:\Downloads\studying\Diplom\Diplom\Diplom\obj\Debug\net5.0-windows\Diplom.CreatePartitionForm.resources
 D:\Downloads\studying\Diplom\Diplom\Diplom\bin\Debug\net5.0-windows\ru-RU\Diplom.resources.dll
 D:\Downloads\studying\Diplom\Diplom\Diplom\obj\Debug\net5.0-windows\Diplom.CreateResourceForm.ru-RU.resources
 D:\Downloads\studying\Diplom\Diplom\Diplom\obj\Debug\net5.0-windows\ru-RU\Diplom.resources.cs
 D:\Downloads\studying\Diplom\Diplom\Diplom\obj\Debug\net5.0-windows\ru-RU\Diplom.resources.dll
+D:\Downloads\studying\Diplom\Diplom\Diplom\obj\Debug\net5.0-windows\Diplom.CreateMeasureForm.resources
+D:\Downloads\studying\Diplom\Diplom\Diplom\obj\Debug\net5.0-windows\Diplom.DeleteForm.resources
+D:\Downloads\studying\Diplom\Diplom\Diplom\obj\Debug\net5.0-windows\Diplom.EditChoseForm.resources
+D:\Downloads\studying\Diplom\Diplom\Diplom\obj\Debug\net5.0-windows\Diplom.EditItem.resources
+D:\Downloads\studying\Diplom\Diplom\Diplom\obj\Debug\net5.0-windows\Diplom.EditMeasureForm.resources
+D:\Downloads\studying\Diplom\Diplom\Diplom\obj\Debug\net5.0-windows\Diplom.EditResourceForm.resources
+D:\Downloads\studying\Diplom\Diplom\Diplom\obj\Debug\net5.0-windows\Diplom.EditResourceForm.ru-RU.resources
+D:\Downloads\studying\Diplom\Diplom\Diplom\obj\Debug\net5.0-windows\Diplom.StoreForm.resources

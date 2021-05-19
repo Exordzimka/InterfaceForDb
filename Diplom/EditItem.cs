@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -8,15 +6,44 @@ using static System.Char;
 
 namespace Diplom
 {
-    public partial class CreateItem : Form
+    public partial class EditItem : Form
     {
-        public CreateItem()
+        private Item _item;
+
+        public EditItem(Item item)
         {
+            _item = item;
             InitializeComponent();
-            using var db = new DiplomContext();
-            using var db1 = new DiplomContext();
-            listBox1.Items.AddRange(db.Items.ToArray());
-            listBox3.Items.AddRange(db1.Resources.ToArray());
+            textBox1.Text = _item.Title;
+            using (var db = new DiplomContext())
+            {
+                listBox2.Items.AddRange(db.ItemItems.Where(itemItem => itemItem.ParentItemId == _item.Id).ToArray());
+            }
+
+            using (var db = new DiplomContext())
+            {
+                listBox4.Items.AddRange(db.ItemResources.Where(resource => resource.ItemId == item.Id).ToArray());
+            }
+
+            using (var db = new DiplomContext())
+            {
+                var usedItemIds = listBox2.Items.Cast<ItemItem>().Select(itemItem => itemItem.ChildItemId);
+                foreach (var unusedItem in db.Items)
+                {
+                    if (!usedItemIds.Contains(unusedItem.Id))
+                        listBox1.Items.Add(unusedItem);
+                }
+            }
+
+            using (var db = new DiplomContext())
+            {
+                var usedResourceIds = listBox4.Items.Cast<ItemResource>().Select(resource => resource.Id);
+                foreach (var unusedResource in db.Resources)
+                {
+                    if (!usedResourceIds.Contains(unusedResource.Id))
+                        listBox3.Items.Add(unusedResource);
+                }
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -32,10 +59,10 @@ namespace Diplom
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if(listBox2.SelectedIndices.Count==0) return;
+            if (listBox2.SelectedIndices.Count == 0) return;
             using var db = new DiplomContext();
             var itemId = ((ItemItem) listBox2.Items[listBox2.SelectedIndex]).ChildItemId;
-            listBox1.Items.Add(db.Items.FirstOrDefault(x => x.Id==itemId));
+            listBox1.Items.Add(db.Items.FirstOrDefault(x => x.Id == itemId));
             listBox2.Items.RemoveAt(listBox2.SelectedIndex);
         }
 
@@ -65,8 +92,8 @@ namespace Diplom
             var textBox = new TextBox();
             acceptButton.Text = "OK";
             cancelButton.Text = "Отмена";
-            textBox.Location = new Point(form.Width/2-textBox.Width/2, form.Height/2-textBox.Height*2);
-            acceptButton.Location = new Point(textBox.Left - textBox.Width/4, textBox.Height + textBox.Top + 10);
+            textBox.Location = new Point(form.Width / 2 - textBox.Width / 2, form.Height / 2 - textBox.Height * 2);
+            acceptButton.Location = new Point(textBox.Left - textBox.Width / 4, textBox.Height + textBox.Top + 10);
             acceptButton.Height = 30;
             cancelButton.Location =
                 new Point(acceptButton.Left + acceptButton.Width + 5, textBox.Height + textBox.Top + 10);
@@ -85,10 +112,11 @@ namespace Diplom
             form.ShowDialog();
             if (form.DialogResult == DialogResult.OK)
             {
-                var count = string.IsNullOrWhiteSpace(textBox.Text)?0:int.Parse(textBox.Text);
+                var count = string.IsNullOrWhiteSpace(textBox.Text) ? 0 : int.Parse(textBox.Text);
                 form.Dispose();
                 return count;
             }
+
             form.Dispose();
             return 0;
         }
@@ -106,34 +134,42 @@ namespace Diplom
         {
             if (string.IsNullOrEmpty(textBox1.Text))
                 MessageBox.Show("Не заполнено название новой позиции");
-            else if (listBox4.Items.Count == 0 && listBox2.Items.Count<=1)
+            else if (listBox4.Items.Count == 0 && listBox2.Items.Count <= 1)
                 MessageBox.Show("Новое изделие не может быть состоять из одного другого");
-            else if (listBox2.Items.Count == 0 && listBox4.Items.Count==0)
+            else if (listBox2.Items.Count == 0 && listBox4.Items.Count == 0)
                 MessageBox.Show("Изделие должно из чего нибудь состоять");
             else
             {
-                var item = new Item {Title = textBox1.Text};
+                _item.Title = textBox1.Text;
                 using var db = new DiplomContext();
-                db.Add(item);
+                using var db1 = new DiplomContext();
+                using var db2 = new DiplomContext();
+                db.Update(_item);
                 db.SaveChanges();
+                var itemsForDelete = db1.ItemItems.Where(x => x.ParentItemId == _item.Id);
+                db1.RemoveRange(itemsForDelete);
+                db1.SaveChanges();
                 foreach (ItemItem itemItem in listBox2.Items)
                 {
-                    itemItem.ParentItemId = item.Id;
                     db.Add(itemItem);
                     db.SaveChanges();
                 }
 
+                var resourcesForDelete = db2.ItemResources.Where(x => x.ItemId == _item.Id);
+                db2.RemoveRange(resourcesForDelete);
+                db2.SaveChanges();
                 foreach (ItemResource itemResource in listBox4.Items)
                 {
                     itemResource.Resource = null;
-                    itemResource.ItemId = item.Id;
+                    itemResource.ItemId = _item.Id;
                     db.Add(itemResource);
                     db.SaveChanges();
                 }
+
                 Dispose();
             }
         }
-
+        
         private void button7_Click(object sender, EventArgs e)
         {
             var createResourceForm = new CreateResourceForm();

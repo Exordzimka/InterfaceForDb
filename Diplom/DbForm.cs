@@ -15,17 +15,53 @@ namespace Diplom
             var createItemForm = new CreateItem();
             createItemForm.ShowDialog();
         }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            var createPartitionForm = new CreatePartitionForm();
-            createPartitionForm.ShowDialog();
-        }
-
+        
         private void button3_Click(object sender, EventArgs e)
         {
             var createResourceForm = new CreateResourceForm();
             createResourceForm.ShowDialog();
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            var createMeasureForm = new CreateMeasureForm();
+            createMeasureForm.ShowDialog();
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            var deleteForm = new DeleteForm("item");
+            deleteForm.ShowDialog();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            var deleteForm = new DeleteForm("resource");
+            deleteForm.ShowDialog();
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            var deleteForm = new DeleteForm("measure");
+            deleteForm.ShowDialog();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            var editChoseForm = new EditChoseForm("item");
+            editChoseForm.ShowDialog();
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            var editChoseForm = new EditChoseForm("resource");
+            editChoseForm.ShowDialog();
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            var editChoseForm = new EditChoseForm("measure");
+            editChoseForm.ShowDialog();
         }
     }
 }

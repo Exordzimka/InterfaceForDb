@@ -1,21 +1,15 @@
 using System;
 using System.Windows.Forms;
-using static System.Char;
 
 namespace Diplom
 {
-    public partial class CreatePartitionForm : Form
+    public partial class EditMeasureForm : Form
     {
-        public CreatePartitionForm()
+        public EditMeasureForm(Measure measure)
         {
             InitializeComponent();
+            textBox1.Text = measure.Title;
         }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            Dispose();
-        }
-
         private void button1_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(textBox1.Text))
@@ -23,10 +17,15 @@ namespace Diplom
             else
             {
                 using var db = new DiplomContext();
-                db.Add(new Partition {Title = textBox1.Text});
+                db.Add(new Measure {Title = textBox1.Text});
                 db.SaveChanges();
                 Dispose();
             }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Dispose();
         }
     }
 }
