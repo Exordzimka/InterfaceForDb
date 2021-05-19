@@ -24,10 +24,6 @@ namespace Diplom
 
         private void AddElementsInTree(Item item)
         {
-            using var db = new DiplomContext();
-            using var db1 = new DiplomContext();
-            using var db2 = new DiplomContext();
-            using var db3 = new DiplomContext();
             treeView1.Nodes.Clear();
             treeView1.Nodes.Add(item.ToString());
             AddItem(item, treeView1.Nodes[^1]);
@@ -35,12 +31,38 @@ namespace Diplom
 
         private void AddItem(Item item, TreeNode node)
         {
-            using var db = new DiplomContext();
-            using var db1 = new DiplomContext();
-            var childrenItems = db.ItemItems.Where(itemItem => itemItem.ParentItemId == item.Id);
-            var itemResources = db1.ItemResources.Where(resource => resource.ItemId == item.Id);
-            foreach (var itemResource in itemResources)
-                node.Nodes.Add(itemResource.ToString());
+            var childrenItems = new List<ItemItem>();
+            var itemResources = new List<ItemResource>();
+            var workshops = new List<Workshop>();
+            using (var db = new DiplomContext())
+            {
+                childrenItems.AddRange(db.ItemItems.Where(itemItem => itemItem.ParentItemId == item.Id));
+            }
+            using (var db = new DiplomContext())
+            {
+                itemResources.AddRange(db.ItemResources.Where(resource => resource.ItemId == item.Id));
+            }
+            
+                foreach (var itemResource in itemResources)
+                {
+                    using var db = new DiplomContext();
+                    var resource = db.Resources.FirstOrDefault(x => x.Id==itemResource.ResourceId);
+                    using var db1 = new DiplomContext();
+                    var workshop = db1.Workshops.FirstOrDefault(x => x.Id == resource.WorkshopId);
+                    if(!workshops.Contains(workshop))
+                        workshops.Add(workshop);
+                }
+
+
+                foreach (var workshop in workshops)
+                {
+                    node.Nodes.Add(workshop.ToString());
+                    var workshopNode = node.LastNode;
+                    foreach(var itemResource in itemResources)
+                        if(itemResource.getWorkshop().Id == workshop.Id)
+                            workshopNode.Nodes.Add(itemResource.ToString());    
+                }
+                
             foreach (var childrenItem in childrenItems)
             {
                 using var dbConnection = new DiplomContext();

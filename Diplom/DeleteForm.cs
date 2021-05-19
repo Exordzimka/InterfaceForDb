@@ -23,6 +23,9 @@ namespace Diplom
                 case "measure":
                     listBox1.Items.AddRange(db.Measures.ToArray());
                     break;
+                case "workshop":
+                    listBox1.Items.AddRange(db.Workshops.ToArray());
+                    break;
             }
         }
 
@@ -42,6 +45,10 @@ namespace Diplom
                     break;
                 case "measure":
                     db.Measures.Remove((Measure) listBox1.SelectedItem);
+                    db.SaveChanges();
+                    break;
+                case "workshop":
+                    db.Workshops.Remove((Workshop) listBox1.SelectedItem);
                     db.SaveChanges();
                     break;
             }

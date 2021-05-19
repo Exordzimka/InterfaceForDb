@@ -19,9 +19,6 @@
       <Compile Update="DbForm.cs">
         <SubType>Form</SubType>
       </Compile>
-      <Compile Update="CreateResourceForm.cs">
-        <SubType>Form</SubType>
-      </Compile>
       <Compile Update="CreateMeasureForm.cs">
         <SubType>Form</SubType>
       </Compile>
@@ -41,6 +38,15 @@
         <SubType>Form</SubType>
       </Compile>
       <Compile Update="StoreForm.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="CreateWorkshopForm.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="EditWorkshopForm.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="CreateResourceForm1.cs">
         <SubType>Form</SubType>
       </Compile>
     </ItemGroup>

@@ -19,7 +19,7 @@ namespace Diplom
         public override string ToString()
         {
             using var db = new DiplomContext();
-            var item = db.Items.FirstOrDefault(item1 => item1.Id == ChildItemId);
+            var item = db.Items.FirstOrDefault(x => x.Id == ChildItemId);
             return $"{item.Title} {Count} шт.";
         }
     }

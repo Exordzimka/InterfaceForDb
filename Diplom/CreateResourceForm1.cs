@@ -4,15 +4,19 @@ using System.Windows.Forms;
 
 namespace Diplom
 {
-    public partial class CreateResourceForm : Form
+    public partial class CreateResourceForm1 : Form
     {
-        public CreateResourceForm()
+        public CreateResourceForm1()
         {
             InitializeComponent();
             using var db = new DiplomContext();
             comboBox1.Items.AddRange(db.Measures.ToArray());
             comboBox1.SelectedItem = comboBox1.Items[0];
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
+            using var db1 = new DiplomContext();
+            comboBox2.Items.AddRange(db1.Workshops.ToArray());
+            comboBox2.SelectedItem = comboBox2.Items[0];
+            comboBox2.DropDownStyle = ComboBoxStyle.DropDownList;
         }
 
         private void button1_Click(object sender, EventArgs e)

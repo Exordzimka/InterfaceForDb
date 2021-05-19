@@ -18,7 +18,7 @@ namespace Diplom
         
         private void button3_Click(object sender, EventArgs e)
         {
-            var createResourceForm = new CreateResourceForm();
+            var createResourceForm = new CreateResourceForm1();
             createResourceForm.ShowDialog();
         }
 
@@ -62,6 +62,24 @@ namespace Diplom
         {
             var editChoseForm = new EditChoseForm("measure");
             editChoseForm.ShowDialog();
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            var createWorkShopForm = new CreateWorkshopForm();
+            createWorkShopForm.ShowDialog();
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            var editChoseForm = new EditChoseForm("workshop");
+            editChoseForm.ShowDialog();   
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            var deleteForm = new DeleteForm("workshop");
+            deleteForm.ShowDialog();
         }
     }
 }

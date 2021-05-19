@@ -136,7 +136,7 @@ namespace Diplom
 
         private void button7_Click(object sender, EventArgs e)
         {
-            var createResourceForm = new CreateResourceForm();
+            var createResourceForm = new CreateResourceForm1();
             createResourceForm.ShowDialog();
             listBox3.Items.Clear();
             using var db = new DiplomContext();

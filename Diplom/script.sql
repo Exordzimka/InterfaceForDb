@@ -1,10 +1,9 @@
 create table item
 (
-    id             bigserial not null
+    id    bigserial not null
         constraint item_pk
             primary key,
-    title          varchar   not null,
-    count_on_store integer
+    title varchar   not null
 );
 
 alter table item
@@ -43,6 +42,17 @@ create table measure
 alter table measure
     owner to postgres;
 
+create table workshop
+(
+    id      serial not null
+        constraint workshop_pk
+            primary key,
+    "Title" varchar
+);
+
+alter table workshop
+    owner to postgres;
+
 create table resource
 (
     id             bigserial not null
@@ -53,6 +63,10 @@ create table resource
     "measureId"    bigint
         constraint resource_measure_id_fk
             references measure
+            on update cascade on delete cascade,
+    "workshopId"   integer
+        constraint resource_workshop_id_fk
+            references workshop
             on update cascade on delete cascade
 );
 

@@ -16,8 +16,10 @@ namespace Diplom
         public string Title { get; set; }
         public int? CountOnStore { get; set; }
         public long? MeasureId { get; set; }
+        public int? WorkshopId { get; set; }
 
         public virtual Measure Measure { get; set; }
+        public virtual Workshop Workshop { get; set; }
         public virtual ICollection<ItemResource> ItemResources { get; set; }
 
         public override string ToString()

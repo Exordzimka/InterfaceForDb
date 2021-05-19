@@ -16,7 +16,6 @@ namespace Diplom
 
         public long Id { get; set; }
         public string Title { get; set; }
-        public int? CountOnStore { get; set; }
 
         public virtual ICollection<ItemItem> ItemItemChildItems { get; set; }
         public virtual ICollection<ItemItem> ItemItemParentItems { get; set; }

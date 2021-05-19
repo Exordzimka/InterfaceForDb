@@ -22,6 +22,7 @@ namespace Diplom
         public virtual DbSet<ItemResource> ItemResources { get; set; }
         public virtual DbSet<Measure> Measures { get; set; }
         public virtual DbSet<Resource> Resources { get; set; }
+        public virtual DbSet<Workshop> Workshops { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -44,8 +45,6 @@ namespace Diplom
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("id");
-
-                entity.Property(e => e.CountOnStore).HasColumnName("count_on_store");
 
                 entity.Property(e => e.Title)
                     .IsRequired()
@@ -127,7 +126,9 @@ namespace Diplom
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.CountOnStore).HasColumnName("count_on_store");
+                entity.Property(e => e.CountOnStore)
+                    .HasColumnName("count_on_store")
+                    .HasDefaultValueSql("0");
 
                 entity.Property(e => e.MeasureId).HasColumnName("measureId");
 
@@ -136,11 +137,28 @@ namespace Diplom
                     .HasColumnType("character varying")
                     .HasColumnName("title");
 
+                entity.Property(e => e.WorkshopId).HasColumnName("workshopId");
+
                 entity.HasOne(d => d.Measure)
                     .WithMany(p => p.Resources)
                     .HasForeignKey(d => d.MeasureId)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("resource_measure_id_fk");
+
+                entity.HasOne(d => d.Workshop)
+                    .WithMany(p => p.Resources)
+                    .HasForeignKey(d => d.WorkshopId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("resource_workshop_id_fk");
+            });
+
+            modelBuilder.Entity<Workshop>(entity =>
+            {
+                entity.ToTable("workshop");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Title).HasColumnType("character varying");
             });
 
             OnModelCreatingPartial(modelBuilder);
